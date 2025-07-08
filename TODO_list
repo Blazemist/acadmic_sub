@@ -1,0 +1,6 @@
+- create sample data to test on the program [✅]
+- creating program to check if all timetables are available[❌]
+- creating ui to take names of teaching staff that are absent and at which day [❌]
+- create algorithm to sort thought all timetable to get list of all teacher teaching at specific class [❌]
+- create automatic assigning method using #4 to assign teachers while also considering their free time [❌]
+- creating a tabular ui to display the final result in a neat way along with options for the user to modify it as well[❌]
