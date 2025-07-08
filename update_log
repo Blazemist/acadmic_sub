@@ -1,3 +1,9 @@
+08-07-2025
 update #1
 
 finished creating sample table maker for each days
+the sub_sample_data_maker file uses random module create a random combination of classes and teaching staffs
+to create a complex combinations of teachers with free periods, with multiple class, with singuluar class.
+This will be very usefull in testing out the teacher substitution program.
+
+
