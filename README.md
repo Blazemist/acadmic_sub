@@ -1,3 +1,5 @@
+# the whole project is still work in progress and i update as i get motivation
+
 This Program requires the time table to follow some rules for it to work
 
 - **Rule 1**
