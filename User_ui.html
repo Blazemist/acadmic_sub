@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attendance Management System</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+            font-weight: 600;
+        }
+
+        .file-input-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .file-input {
+            flex: 1;
+            min-width: 250px;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+
+        .file-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+            transform: translateY(-2px);
+        }
+
+        .dropdown {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 16px;
+            margin-bottom: 15px;
+            background: white;
+            transition: all 0.3s ease;
+        }
+
+        .dropdown:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .status-message {
+            padding: 12px 16px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-weight: 500;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .status-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .count-display {
+            font-size: 1.2em;
+            font-weight: 600;
+            text-align: center;
+            padding: 15px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .count-display.has-absences {
+            background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+            color: #721c24;
+        }
+
+        .checkbox-container {
+            max-height: 400px;
+            overflow-y: auto;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            background: white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border: 1px solid #e9ecef;
+        }
+
+        .checkbox-item:hover {
+            background: #f0f8ff;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        .checkbox-item label {
+            font-size: 16px;
+            cursor: pointer;
+            flex: 1;
+            user-select: none;
+        }
+
+        .checkbox-item.checked {
+            background: #fff5f5;
+            border-color: #feb2b2;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Scrollbar styling */
+        .checkbox-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .checkbox-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .checkbox-container::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .checkbox-container::-webkit-scrollbar-thumb:hover {
+            background: #5a6fd8;
+        }
+
+        /* Responsive design */
+        @media (max-width: 600px) {
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .file-input-container {
+                flex-direction: column;
+            }
+
+            .controls {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Attendance Management System</h1>
+            <p>Track attendance with ease</p>
+        </div>
+
+        <div class="content">
+            <!-- CSV File Section -->
+            <div class="section">
+                <div class="section-title">📁 CSV File Selection</div>
+                <div class="file-input-container">
+                    <input type="file" id="csvFile" accept=".csv" class="file-input">
+                    <button onclick="loadCSV()" class="btn btn-primary">Load CSV</button>
+                </div>
+                <div id="loadStatus" class="status-message hidden"></div>
+            </div>
+
+            <!-- Quick Absentee Selection -->
+            <div class="section">
+                <div class="section-title">⚡ Quick Absentee Selection</div>
+                <select id="absenteeDropdown" class="dropdown">
+                    <option value="">Select a person to mark as absent...</option>
+                </select>
+                <button onclick="markAbsent()" class="btn btn-danger">Mark as Absent</button>
+                <div id="absenteeStatus" class="status-message hidden"></div>
+            </div>
+
+            <!-- Manual Selection -->
+            <div class="section">
+                <div class="section-title">✋ Manual Selection</div>
+                <div id="countDisplay" class="count-display">Absent: 0</div>
+                <div id="checkboxContainer" class="checkbox-container hidden">
+                    <!-- Checkboxes will be populated here -->
+                </div>
+                <div class="controls">
+                    <button onclick="selectAll()" class="btn btn-secondary">Select All</button>
+                    <button onclick="deselectAll()" class="btn btn-secondary">Deselect All</button>
+                    <button onclick="proceed()" class="btn btn-success">Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let namesList = [];
+        let selectedNames = new Set();
+
+        function loadCSV() {
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showStatus('loadStatus', 'Please select a CSV file first', 'error');
+                return;
+            }
+
+            if (!file.name.toLowerCase().endsWith('.csv')) {
+                showStatus('loadStatus', 'Please select a valid CSV file', 'error');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const csv = e.target.result;
+                    const lines = csv.split('\n');
+                    
+                    namesList = [];
+                    
+                    // Skip header row and process data
+                    for (let i = 1; i < lines.length; i++) {
+                        const line = lines[i].trim();
+                        if (line) {
+                            const columns = line.split(',');
+                            if (columns[0] && columns[0].trim()) {
+                                namesList.push(columns[0].trim().replace(/"/g, ''));
+                            }
+                        }
+                    }
+
+                    if (namesList.length > 0) {
+                        updateUI();
+                        showStatus('loadStatus', `Successfully loaded ${namesList.length} names`, 'success');
+                    } else {
+                        showStatus('loadStatus', 'No names found in the first column', 'error');
+                    }
+                } catch (error) {
+                    showStatus('loadStatus', 'Error reading CSV file: ' + error.message, 'error');
+                }
+            };
+            
+            reader.readAsText(file);
+        }
+
+        function updateUI() {
+            // Clear previous selections
+            selectedNames.clear();
+            
+            // Update dropdown
+            const dropdown = document.getElementById('absenteeDropdown');
+            dropdown.innerHTML = '<option value="">Select a person to mark as absent...</option>';
+            namesList.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                dropdown.appendChild(option);
+            });
+
+            // Create checkboxes
+            const container = document.getElementById('checkboxContainer');
+            container.innerHTML = '';
+            container.classList.remove('hidden');
+
+            namesList.forEach(name => {
+                const div = document.createElement('div');
+                div.className = 'checkbox-item';
+                div.innerHTML = `
+                    <input type="checkbox" id="cb_${name}" onchange="onCheckboxChange('${name}')">
+                    <label for="cb_${name}">${name}</label>
+                `;
+                container.appendChild(div);
+            });
+
+            // Reset status messages
+            document.getElementById('absenteeStatus').classList.add('hidden');
+            updateAbsentCount();
+        }
+
+        function markAbsent() {
+            const dropdown = document.getElementById('absenteeDropdown');
+            const selectedName = dropdown.value;
+            
+            if (!selectedName) {
+                showStatus('absenteeStatus', 'Please select a person from the dropdown', 'error');
+                return;
+            }
+
+            // Mark checkbox
+            const checkbox = document.getElementById(`cb_${selectedName}`);
+            if (checkbox) {
+                checkbox.checked = true;
+                selectedNames.add(selectedName);
+                updateCheckboxStyle(selectedName);
+            }
+
+            showStatus('absenteeStatus', `✓ Marked as absent: ${selectedName}`, 'success');
+            dropdown.value = '';
+            updateAbsentCount();
+        }
+
+        function onCheckboxChange(name) {
+            const checkbox = document.getElementById(`cb_${name}`);
+            if (checkbox.checked) {
+                selectedNames.add(name);
+            } else {
+                selectedNames.delete(name);
+            }
+            updateCheckboxStyle(name);
+            updateAbsentCount();
+        }
+
+        function updateCheckboxStyle(name) {
+            const checkbox = document.getElementById(`cb_${name}`);
+            const item = checkbox.closest('.checkbox-item');
+            if (checkbox.checked) {
+                item.classList.add('checked');
+            } else {
+                item.classList.remove('checked');
+            }
+        }
+
+        function selectAll() {
+            namesList.forEach(name => {
+                const checkbox = document.getElementById(`cb_${name}`);
+                checkbox.checked = true;
+                selectedNames.add(name);
+                updateCheckboxStyle(name);
+            });
+            updateAbsentCount();
+        }
+
+        function deselectAll() {
+            namesList.forEach(name => {
+                const checkbox = document.getElementById(`cb_${name}`);
+                checkbox.checked = false;
+                selectedNames.delete(name);
+                updateCheckboxStyle(name);
+            });
+            updateAbsentCount();
+        }
+
+        function updateAbsentCount() {
+            const count = selectedNames.size;
+            const display = document.getElementById('countDisplay');
+            display.textContent = `Absent: ${count}`;
+            
+            if (count > 0) {
+                display.classList.add('has-absences');
+            } else {
+                display.classList.remove('has-absences');
+            }
+        }
+
+        function showStatus(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.textContent = message;
+            element.className = `status-message status-${type}`;
+            element.classList.remove('hidden');
+        }
+
+        function proceed() {
+            if (selectedNames.size === 0) {
+                alert('No absences recorded. Everyone is present!');
+                return;
+            }
+            
+            // Create JSON object with selected names
+            const attendanceData = {
+                selected_names: Array.from(selectedNames)
+            };
+            
+            // Convert to JSON string
+            const jsonString = JSON.stringify(attendanceData, null, 2);
+            
+            // Create and download JSON file
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `attendance_${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            // Show success message
+            const absentList = Array.from(selectedNames).join(', ');
+            alert(`Attendance recorded and JSON file downloaded!\n\nAbsent (${selectedNames.size}): ${absentList}`);
+        }
+    </script>
+</body>
+</html>
