@@ -6,4 +6,11 @@ the sub_sample_data_maker file uses random module create a random combination of
 to create a complex combinations of teachers with free periods, with multiple class, with singuluar class.
 This will be very usefull in testing out the teacher substitution program.
 
+update #2
+created the 1st ui of the program (using claude ai for the widget placement)
+user ui file accesses the timetable and absenties from the user for the name program.
+the user is given the choice to simply click the absentee in scrollable area or manually type their name in the manual area.
 
+next stop is considering if "select all" option should be there or not , as well as create a main program that loads this
+user_ui.html file to collect data then process it (in python)
+and finally give output( most likely using html again)
